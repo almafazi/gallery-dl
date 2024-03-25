@@ -99,7 +99,7 @@ app.post('/fetch', (req, res) => {
 
     function renderTemplate(jsonOutput) {
         // Render the EJS template to a string
-        ejs.renderFile('views/instagram.ejs', { jsonOutput: jsonOutput, encrypt: encrypt, download_base_url: 'http://localhost:3111/dl', image_base_url: 'http://localhost:3111/pic'}, {}, (err, str) => {
+        ejs.renderFile('views/instagram.ejs', { jsonOutput: jsonOutput, encrypt: encrypt, download_base_url: 'https://cdn.snaptik.vip/snapinsta/dl', image_base_url: 'https://cdn.snaptik.vip/snapinsta/pic'}, {}, (err, str) => {
             if (err) {
                 console.error(`Error rendering EJS template: ${err.message}`);
                 return res.status(500).json({ error: 'Internal server error' });
