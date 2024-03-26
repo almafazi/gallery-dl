@@ -21,26 +21,35 @@ app.use(cors());
 
 const cookies_list = ['./cookies/cookies1.txt', './cookies/cookies2.txt'];
 
+function urlencode(str) {
+    return encodeURIComponent(str);
+}
+
+function urldecode(str) {
+    return decodeURIComponent(str);
+}
+
 app.get('/dl', async (req, res) => {
     let imgurl = req.query.imgurl;
     let vidurl = req.query.vidurl;
+    let fullname = req.query.fullname;
 
     
 
-    if (!imgurl && !vidurl) {
+    if ((!imgurl && !vidurl) || !fullname) {
         return res.status(400).json({ error: 'Invalid request. Please provide either imgurl or vidurl.' });
     }
     
     if (imgurl) {
         imgurl = decrypt(imgurl);
         const response = await axios.get(imgurl, { responseType: 'stream' });
-        res.setHeader('Content-Disposition', 'attachment; filename="image.jpg"');
+        res.setHeader('Content-Disposition', 'attachment; filename="'+urldecode(fullname)+'.jpg"');
         res.setHeader('Content-Type', response.headers['content-type']);
         response.data.pipe(res);
     } else if (vidurl) {
         vidurl = decrypt(vidurl);
         const response = await axios.get(vidurl, { responseType: 'stream' });
-        res.setHeader('Content-Disposition', 'attachment; filename="video.mp4"');
+        res.setHeader('Content-Disposition', 'attachment; filename="'+urldecode(fullname)+'.mp4"');
         res.setHeader('Content-Type', response.headers['content-type']);
         response.data.pipe(res);
     }
@@ -99,7 +108,7 @@ app.post('/fetch', (req, res) => {
 
     function renderTemplate(jsonOutput) {
         // Render the EJS template to a string
-        ejs.renderFile('views/instagram.ejs', { jsonOutput: jsonOutput, encrypt: encrypt, download_base_url: 'https://cdn.snaptik.vip/snapinsta/dl', image_base_url: 'https://cdn.snaptik.vip/snapinsta/pic'}, {}, (err, str) => {
+        ejs.renderFile('views/instagram.ejs', { urlencode: urlencode,jsonOutput: jsonOutput, encrypt: encrypt, download_base_url: process.env.DOWNLOAD_BASE_URL, image_base_url: process.env.IMAGE_BASE_URL}, {}, (err, str) => {
             if (err) {
                 console.error(`Error rendering EJS template: ${err.message}`);
                 return res.status(500).json({ error: 'Internal server error' });
