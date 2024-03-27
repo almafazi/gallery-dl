@@ -108,7 +108,7 @@ app.post('/fetch', (req, res) => {
 
     function renderTemplate(jsonOutput) {
         // Render the EJS template to a string
-        ejs.renderFile('views/instagram.ejs', { urlencode: urlencode,jsonOutput: jsonOutput, encrypt: encrypt, download_base_url: process.env.DOWNLOAD_BASE_URL, image_base_url: process.env.IMAGE_BASE_URL}, {}, (err, str) => {
+        ejs.renderFile('views/instagram.ejs', { urlencode: urlencode,jsonOutput: jsonOutput, encrypt: encrypt, base_url: process.env.BASE_URL, download_base_url: process.env.DOWNLOAD_BASE_URL, image_base_url: process.env.IMAGE_BASE_URL}, {}, (err, str) => {
             if (err) {
                 console.error(`Error rendering EJS template: ${err.message}`);
                 return res.status(500).json({ error: 'Internal server error' });
