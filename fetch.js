@@ -19,7 +19,7 @@ app.set('view engine', 'ejs');
 
 app.use(cors());
 
-const cookies_list = ['./cookies/cookies1.txt', './cookies/cookies2.txt'];
+const cookies_list = ['./cookies/cookies.txt'];
 
 function urlencode(str) {
     return encodeURIComponent(str);
