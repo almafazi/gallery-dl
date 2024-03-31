@@ -76,7 +76,7 @@ app.post('/fetch', (req, res) => {
     const proxy = 'http://hwbknjxk-rotate:wcpjh6lq5loy@p.webshare.io:80'; 
     const cookies = cookies_list[Math.floor(Math.random() * cookies_list.length)];
 
-    const command = `./gallery-dl --no-download --dump-json -u singlofc -p 25051972 ${url}`;
+    const command = `./gallery-dl --no-download --dump-json --cookies ${cookies} ${url}`;
 
     // Check if the result is in the cache
     client.get(urlWithoutQuery, (err, result) => {
