@@ -96,6 +96,8 @@ app.post('/fetch', (req, res) => {
                     return res.status(400).json({ error: 'Invalid request' });
                 }
 
+            console.log(stdout)
+
                 const jsonOutput = JSON.parse(stdout);
 
                 // Store the result in the cache with an expiration time of 1 hour
