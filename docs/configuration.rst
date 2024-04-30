@@ -358,13 +358,24 @@ Description
     i.e. before starting a new extractor.
 
 
+extractor.*.sleep-429
+---------------------
+Type
+    |Duration|_
+Default
+    ``60``
+Description
+    Number of seconds to sleep when receiving a `429 Too Many Requests`
+    response before `retrying <extractor.*.retries_>`__ the request.
+
+
 extractor.*.sleep-request
 -------------------------
 Type
     |Duration|_
 Default
     * ``"0.5-1.5"``
-        ``[Danbooru]``, ``[E621]``, ``[foolfuuka]``, ``itaku``,
+        ``[Danbooru]``, ``[E621]``, ``[foolfuuka]:search``, ``itaku``,
         ``newgrounds``, ``[philomena]``, ``pixiv:novel``, ``plurk``,
         ``poipiku`` , ``pornpics``, ``soundgasm``, ``urlgalleries``,
         ``vk``, ``zerochan``
@@ -2964,14 +2975,24 @@ Description
     `gppt <https://github.com/eggplants/get-pixivpy-token>`__.
 
 
-extractor.pixiv.embeds
-----------------------
+extractor.pixiv.novel.covers
+----------------------------
 Type
     ``bool``
 Default
     ``false``
 Description
-    Download images embedded in novels.
+    Download cover images.
+
+
+extractor.pixiv.novel.embeds
+----------------------------
+Type
+    ``bool``
+Default
+    ``false``
+Description
+    Download embedded images.
 
 
 extractor.pixiv.novel.full-series
@@ -3904,6 +3925,19 @@ Description
 
     * ``"abort"``: Raise an error and stop extraction
     * ``"wait"``: Wait until rate limit reset
+
+
+extractor.twitter.relogin
+-------------------------
+Type
+    ``bool``
+Default
+    ``true``
+Description
+    | When receiving a "Could not authenticate you" error while logged in with
+      `username & passeword <extractor.*.username & .password_>`__,
+    | refresh the current login session and
+      try to continue from where it left off.
 
 
 extractor.twitter.locked
@@ -4887,10 +4921,33 @@ output.colors
 Type
     ``object`` (`key` -> `ANSI color`)
 Default
-    ``{"success": "1;32", "skip": "2"}``
+    .. code:: json
+
+        {
+            "success": "1;32",
+            "skip"   : "2",
+            "debug"  : "0;37",
+            "info"   : "1;37",
+            "warning": "1;33",
+            "error"  : "1;31"
+        }
+
 Description
-    Controls the `ANSI colors <https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797#colors--graphics-mode>`__
-    used with |mode: color|__ for successfully downloaded or skipped files.
+    Controls the
+    `ANSI colors <https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797#colors--graphics-mode>`__
+    used for various outputs.
+
+    Output for |mode: color|__
+
+    * ``success``: successfully downloaded files
+    * ``skip``: skipped files
+
+    Logging Messages:
+
+    * ``debug``: debug logging messages
+    * ``info``: info logging messages
+    * ``warning``: warning logging messages
+    * ``error``: error logging messages
 
 .. __: `output.mode`_
 
@@ -4900,7 +4957,7 @@ output.ansi
 Type
     ``bool``
 Default
-    ``false``
+    ``true``
 Description
     | On Windows, enable ANSI escape sequences and colored output
     | by setting the ``ENABLE_VIRTUAL_TERMINAL_PROCESSING`` flag for stdout and stderr.
